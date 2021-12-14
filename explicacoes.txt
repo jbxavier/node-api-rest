@@ -1,0 +1,43 @@
+Para iniciarmos o projeto temos um comando do NPM: npm init.
+O comando vai criar o arquivo package.json e vai configurá-lo com arquivo de entrada (entry point) do programa o index.js (porém não cria, temos que criar na mão!).
+Temos um novo projeto Node.js!
+O index.js, que será responsável pela execução do servidor.
+Utilizaremos o express para implementação do servidor.
+No console instalaremos com comando "npm install express". Após instalação foi inserido dependência no arquivo package.json.
+-> node index.js para executar o servidor no console.
+Testar no browser com o caminho definido: localhost:3000
+
+Nodemon: dependência para atualização automática do servidor. Funcionará somente no ambiente de desenvolvimento. Quando salvar alguma alteração no código o servidor será reiniciado automatícamente!!!
+-> No console escreveremos o comand npm install -- save-dev nodemon
+Após instalado, já estará nas dependências do package.json, agora só fazer uma modificação no package. 
+-> Em scripts:  "scripts": {
+    "start": "nodemon index.js",... IMPORTANTE: agora para iniciar o servidor no console devemos entrar com o comando: "npm start"!
+
+Retiraremos a rota app.get de index.js e passaremos para atendimento.js na pasta controllers. Mesmo exportando não é possível enxergar as rotas. Então instalaremos o consign. "npm install consign". O consign irá agrupar todas as rotas que formos criando dentro do app.
+
+Chamaremos consign() e então iremos incluir todos os módulos decontrollers dentro (into) de app.
+// código...
+consign()
+    .include('controllers')
+    .into(app)
+
+Ao receber uma requisição POST, o console não consegue identificar o corpo da requisição (console.log(req.body)) e retorna "undefined" no console.
+Precisamos instalar um biblioteca capaz de fazer a conversão do corpo da mensagem! Então, instalaremos uma biblioteca chamada body-parser, cuja função é justamente converter as requisições para algo que seja legível no JavaScript.
+
+npm install body-parser 
+
+Então pediremos para que app utilize (use()) essa biblioteca específica. Existem muitas maneiras de realizar essa tradução de requisição, e neste caso utilizaremos o urlenconded com a opção extended: true para que tudo opere normalmente.
+
+app.use(bodyParser.urlencoded({ extended: true }))
+
+Portanto para que a nossa API possa ser consumida por outros serviços, adicionaremos essa especificidade do json.
+
+O body-parser pode aparecer como deprecated. Porém o Express também resolve esse problema de conversão dos dados do corpo de entrada. 
+
+Trocar o bodyParser pelo: 
+    app.use(express.urlencoded({extended: true}))
+    app.use(express.json())
+
+O método express.json() é nativo do express e funciona para reconhecer o objeto da requisição que está sendo recebida (Request Object) como um objeto JSON.
+
+Esse método é chamado como um middleware na sua aplicação utilizando-se o código app.use(express.json());. O express.urlencoded() também é nativo no express e funciona para reconhecer o objeto da requisição que está sendo recebida como um strings ou arrays. Esse método é então chamado como um middleware na sua aplicação por meio do código app.use(express.urlencoded())
