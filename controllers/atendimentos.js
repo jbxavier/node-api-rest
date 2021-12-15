@@ -1,13 +1,16 @@
-const res = require("express/lib/response")
+
+const Atendimento = require('../models/atendimentos.js')
 
 // estamos exportando uma função que recebe o app por parâmetro.
 module.exports = app => {
     // rota GET criada com express
-    app.get('/atendimento', (req, res) => res.send('você está na rota de atendimentos através do GET'))
+    app.get('/atendimentos', (req, res) => res.send('você está na rota de atendimentos através do GET'))
 
-    app.post('/atendimento', (req, res) => {
-        console.log(req.body)
-        res.send('você está na rota de atendimentos através do POST')
+    app.post('/atendimentos', (req, res) => {
+        const atendimento = req.body
+        Atendimento.adiciona(atendimento)
+        //console.log(req.body)
+        res.send('Executado POST em atendimento!')
     })
 }
 

@@ -1,10 +1,22 @@
 // O index.js tem somente a responsabilidade de subir o servidor!!!
 
 const customExpress = require('./config/customExpress.js')
+const conexao = require('./infraestrutura/conexao.js')
+const Tabelas = require('./infraestrutura/tabelas.js')
 
-const app = customExpress()
+conexao.connect((erro) => {
+    if (erro) {
+        console.log(erro)
+    } else {
+        console.log('Conectado ao mysql')
 
-app.listen(3000, () => console.log('Servidor redando na porta 3000'))
+        Tabelas.init(conexao)
+        const app = customExpress()
+        app.listen(3000, () => console.log('Servidor redando na porta 3000'))
+    }
+})
+
+
 
 
 
