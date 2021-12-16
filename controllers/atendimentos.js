@@ -10,7 +10,10 @@ module.exports = app => {
         const atendimento = req.body
         Atendimento.adiciona(atendimento, res)
         //console.log(req.body)
-        res.send('Executado POST em atendimento!')
+        
+        // esse retorno ao cliente tive que remover, causou erro 
+        // ERR_HTTP_HEADERS_SENT por enviar mais de uma vez o retorno ao cliente...
+        //res.send('Executado POST em atendimento!')
     })
 }
 
